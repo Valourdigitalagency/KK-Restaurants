@@ -1,1 +1,0 @@
-window.QRCode = require("qrcode");
