@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#7a1f2b" />
+    <title>KK Restaurant | Multi Cuisine Restaurant</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./public/qr-browser.bundle.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img class="brand-logo" src="./public/kk-restaurant-logo.png" alt="KK Restaurant logo" />
+        <div>
+          <p class="eyebrow">Multi Cuisine | Restaurant</p>
+          <h1>KK Restaurant</h1>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a> 
+        <a href="#checkout">Checkout</a>
+      </nav>
+      <button class="cart-pill" id="cartPill" type="button" aria-label="Open cart">
+        Cart <span id="cartCount">0</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="panel panel-light hero hero-simple" id="home">
+        <div class="hero-copy">
+          <p class="kicker">Restaurant ordering</p>
+          <h2>Browse the menu and place your order.</h2>
+          <p class="hero-text">
+            A clean, straightforward menu view with quick search, cart, and checkout.
+          </p>
+          <div class="search-hero">
+            <span>Search</span>
+            <input type="search" placeholder="Search a dish" />
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#menu">Browse Menu</a>
+            <a class="btn btn-secondary" href="#checkout">Go to Checkout</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Featured dish">
+          <figure class="hero-frame">
+            <img src="./public/food/hero-biryani.jpg" alt="Hero biryani" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="panel panel-light menu-panel" id="menu">
+        <div class="section-head">
+          <div>
+            <p class="kicker">Menu</p>
+            <h2>Browse the menu.</h2>
+          </div>
+          <label class="search-wrap" aria-label="Search menu">
+            <span>Search</span>
+            <input id="searchInput" type="search" placeholder="Search a dish or ingredient" />
+          </label>
+        </div>
+
+        <div class="filters" id="filters" aria-label="Menu filters"></div>
+
+        <div class="menu-grid" id="menuGrid"></div>
+      </section>
+
+      <section class="panel panel-dark checkout-panel" id="checkout">
+        <div class="checkout-grid">
+          <div class="checkout-summary">
+            <p class="kicker kicker-on-dark">Your order</p>
+            <div id="cartItems" class="cart-items"></div>
+            <div class="totals">
+              <div><span>Subtotal</span><strong id="subtotal">Rs 0</strong></div>
+              <div><span>Service fee</span><strong id="serviceFee">Rs 0</strong></div>
+              <div><span>Delivery</span><strong id="deliveryFee">Rs 0</strong></div>
+              <div class="grand"><span>Total</span><strong id="grandTotal">Rs 0</strong></div>
+            </div>
+          </div>
+
+          <form class="checkout-form" id="checkoutForm">
+            <div class="form-grid">
+              <label>
+                Full name
+                <input name="name" type="text" placeholder="Your name" required />
+              </label>
+              <label>
+                Phone number
+                <input name="phone" type="tel" placeholder="10-digit mobile" required />
+              </label>
+              <label class="full">
+                Address
+                <textarea name="address" rows="3" placeholder="Delivery address" required></textarea>
+              </label>
+            </div>
+
+            <div class="payment-field">
+              <label class="field-label">Payment method</label>
+              <div class="payment-options">
+                <label><input type="radio" name="payment" value="upi" checked /> UPI</label>
+                <label><input type="radio" name="payment" value="cash" /> Cash on delivery</label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-wide" type="submit">Pay &amp; Place Order</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <aside class="cart-drawer" id="cartDrawer" aria-live="polite">
+      <div class="drawer-head">
+        <strong>Cart summary</strong>
+        <button type="button" id="closeCart" aria-label="Close cart">×</button>
+      </div>
+      <div id="drawerItems" class="drawer-items"></div>
+      <div class="drawer-total">
+        <span id="drawerTotalLabel">0 items</span>
+        <strong id="drawerTotal">Rs 0</strong>
+      </div>
+    </aside>
+
+    <div class="payment-modal" id="paymentModal" aria-hidden="true">
+      <div class="payment-sheet" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
+        <button class="payment-close" id="closePayment" type="button" aria-label="Close payment window">×</button>
+        <p class="payment-intro">Choose how you'd like to pay.</p>
+        <h2 id="paymentTitle">UPI payment</h2>
+        <p class="payment-copy">Scan the QR or use the UPI ID.</p>
+        <div class="payment-summary">
+          <span>Order total</span>
+          <strong id="paymentAmount">Rs 0</strong>
+        </div>
+        <button class="payment-copy-btn" id="copyUpiId" type="button">Copy UPI ID</button>
+        <div class="payment-layout">
+          <div class="payment-qr-panel">
+            <img id="paymentQr" alt="UPI QR code" />
+            <p id="paymentUpiText"></p>
+            <small class="payment-qr-note">Scan to pay on laptop or mobile.</small>
+          </div>
+          <div class="payment-app-panel">
+            <p class="payment-app-label payment-app-desktop">Open in app</p>
+            <p class="payment-app-label payment-app-mobile">Choose UPI app</p>
+            <label class="upi-app-picker payment-app-mobile" for="upiAppSelect">
+              <span>App name</span>
+              <select id="upiAppSelect" aria-label="Choose UPI app">
+                <option value="gpay">Google Pay</option>
+                <option value="phonepe">PhonePe</option>
+                <option value="paytm">Paytm</option>
+              </select>
+            </label>
+            <button class="btn btn-primary btn-wide payment-app-mobile" id="openUpiAppBtn" type="button">
+              Open selected app
+            </button>
+            <a class="payment-app-btn gpay" id="gpayLink" href="#" rel="noopener">Google Pay</a>
+            <a class="payment-app-btn phonepe" id="phonepeLink" href="#" rel="noopener">PhonePe</a>
+            <a class="payment-app-btn paytm" id="paytmLink" href="#" rel="noopener">Paytm</a>
+            <button class="btn btn-primary btn-wide" id="paidConfirm" type="button">I have paid</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
